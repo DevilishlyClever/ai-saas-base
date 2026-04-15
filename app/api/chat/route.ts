@@ -1,4 +1,4 @@
-import { streamText, convertToModelMessages } from 'ai'
+import { streamText, convertToCoreMessages, gateway } from 'ai'
 import { createServerClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
@@ -22,13 +22,11 @@ export async function POST(req: Request) {
   }
 
   const { messages } = await req.json()
-  const modelMessages = await convertToModelMessages(messages)
 
   try {
     const result = streamText({
-      // Plain "provider/model" string routes through AI Gateway automatically
-      model: 'anthropic/claude-sonnet-4.6' as any,
-      messages: modelMessages,
+      model: gateway('anthropic/claude-sonnet-4.6'),
+      messages: convertToCoreMessages(messages),
       system: 'You are a helpful AI assistant.',
     })
 
