@@ -1,4 +1,4 @@
-import { streamText, convertToCoreMessages, gateway } from 'ai'
+import { streamText, convertToModelMessages, gateway } from 'ai'
 import { createServerClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   try {
     const result = streamText({
       model: gateway('anthropic/claude-sonnet-4.6'),
-      messages: convertToCoreMessages(messages),
+      messages: convertToModelMessages(messages),
       system: 'You are a helpful AI assistant.',
     })
 
